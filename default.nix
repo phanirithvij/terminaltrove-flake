@@ -6,16 +6,16 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs
+, uv2nix
+, pyproject-nix
+, pyproject-build-systems
+}:
 
 {
-  # The `lib`, `modules`, and `overlays` names are special
-  lib = import ./lib { inherit pkgs; }; # functions
-  modules = import ./modules; # NixOS modules
-  overlays = import ./overlays; # nixpkgs overlays
-
   loggo = pkgs.callPackage ./pkgs/loggo { };
   awsesh = pkgs.callPackage ./pkgs/awsesh { };
-  # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
-  # ...
+  cloctui = pkgs.callPackage ./pkgs/cloctui {
+    inherit uv2nix pyproject-nix pyproject-build-systems;
+  };
 }
