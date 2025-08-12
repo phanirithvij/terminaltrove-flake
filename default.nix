@@ -19,4 +19,6 @@
     inherit uv2nix pyproject-nix pyproject-build-systems;
   };
   comchan = pkgs.callPackage ./pkgs/comchan { };
+  qmassa = pkgs.callPackage ./pkgs/qmassa { };
+  swaptop = pkgs.callPackage ./pkgs/swaptop { };
 }
