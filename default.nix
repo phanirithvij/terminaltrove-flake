@@ -18,4 +18,5 @@
   cloctui = pkgs.callPackage ./pkgs/cloctui {
     inherit uv2nix pyproject-nix pyproject-build-systems;
   };
+  comchan = pkgs.callPackage ./pkgs/comchan { };
 }
