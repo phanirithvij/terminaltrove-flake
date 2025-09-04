@@ -21,4 +21,5 @@
   comchan = pkgs.callPackage ./pkgs/comchan { };
   qmassa = pkgs.callPackage ./pkgs/qmassa { };
   swaptop = pkgs.callPackage ./pkgs/swaptop { };
+  joecalsend = pkgs.callPackage ./pkgs/joecalsend { };
 }

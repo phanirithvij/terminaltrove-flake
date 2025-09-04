@@ -5,7 +5,7 @@
 }:
 rustPlatform.buildRustPackage {
   name = "comchan";
-  # version = "0.2.3";
+
   src = fetchFromGitHub {
     owner = "Vaishnav-Sabari-Girish";
     repo = "ComChan";
