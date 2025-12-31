@@ -6,10 +6,31 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs
-, uv2nix
-, pyproject-nix
-, pyproject-build-systems
+let
+  flake-inputs = import (fetchTarball {
+    url = "https://github.com/fricklerhandwerk/flake-inputs/tarball/4.1.0";
+    sha256 = "1j57avx2mqjnhrsgq3xl7ih8v7bdhz1kj3min6364f486ys048bm";
+  });
+  inherit (flake-inputs) import-flake;
+in
+{
+  flake ? import-flake { src = ./.; },
+  sources ? flake.inputs,
+  nixpkgs ? sources.nixpkgs,
+  config ? { }, # allows --arg config from cli
+  overlays ? [ ],
+  system ? builtins.currentSystem,
+  pkgs ? import nixpkgs {
+    inherit
+      config
+      overlays
+      system
+      ;
+  },
+  lib ? import "${nixpkgs}/lib",
+  uv2nix ? sources.uv2nix,
+  pyproject-nix ? sources.pyproject-nix,
+  pyproject-build-systems ? sources.pyproject-build-systems,
 }:
 
 {
