@@ -32,15 +32,19 @@ in
   pyproject-nix ? sources.pyproject-nix,
   pyproject-build-systems ? sources.pyproject-build-systems,
 }:
+let
+  # restrict scope to by-name
+  callPackage = pkgs.newScope (
+    self'
+    // {
+      inherit callPackage;
+      inherit uv2nix pyproject-nix pyproject-build-systems;
+    }
+  );
 
-{
-  loggo = pkgs.callPackage ./pkgs/loggo { };
-  awsesh = pkgs.callPackage ./pkgs/awsesh { };
-  cloctui = pkgs.callPackage ./pkgs/cloctui {
-    inherit uv2nix pyproject-nix pyproject-build-systems;
-  };
-  comchan = pkgs.callPackage ./pkgs/comchan { };
-  qmassa = pkgs.callPackage ./pkgs/qmassa { };
-  swaptop = pkgs.callPackage ./pkgs/swaptop { };
-  joecalsend = pkgs.callPackage ./pkgs/joecalsend { };
-}
+  pkgsByName = import ./pkgs/by-name { inherit callPackage lib; };
+  self' = pkgsByName;
+
+  self = self' // { };
+in
+self
