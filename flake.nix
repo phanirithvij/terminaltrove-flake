@@ -24,30 +24,20 @@
       self,
       nixpkgs,
       flake-utils,
-      pyproject-nix,
-      uv2nix,
-      pyproject-build-systems,
+      ...
     }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        defaultNix = import ./default.nix {
+          inherit pkgs;
+          flake = self;
+        };
       in
       {
-        packages = import ./default.nix {
-          inherit
-            pkgs
-            pyproject-nix
-            uv2nix
-            pyproject-build-systems
-            ;
-        };
-
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            nil
-          ];
-        };
+        packages = defaultNix;
+        devShells.default = defaultNix.shell;
       }
     );
 }

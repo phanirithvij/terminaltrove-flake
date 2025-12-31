@@ -45,6 +45,14 @@ let
   pkgsByName = import ./pkgs/by-name { inherit callPackage lib; };
   self' = pkgsByName;
 
-  self = self' // { };
+  self = self' // {
+    shell = pkgs.mkShellNoCC {
+      packages = with pkgs; [
+        nil
+        gitnr
+        nixfmt
+      ];
+    };
+  };
 in
 self
