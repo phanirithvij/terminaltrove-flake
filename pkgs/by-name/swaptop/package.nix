@@ -1,6 +1,6 @@
 {
   rustPlatform,
-  fetchFromGitHub
+  fetchFromGitHub,
 }:
 rustPlatform.buildRustPackage {
   name = "swaptop";

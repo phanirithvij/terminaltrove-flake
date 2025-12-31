@@ -19,19 +19,35 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, flake-utils, pyproject-nix, uv2nix, pyproject-build-systems }: flake-utils.lib.eachDefaultSystem (
-    system:
-    let
-      pkgs = import nixpkgs { inherit system; };
-    in
+  outputs =
     {
-      packages = import ./default.nix { inherit pkgs pyproject-nix uv2nix pyproject-build-systems; };
+      self,
+      nixpkgs,
+      flake-utils,
+      pyproject-nix,
+      uv2nix,
+      pyproject-build-systems,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in
+      {
+        packages = import ./default.nix {
+          inherit
+            pkgs
+            pyproject-nix
+            uv2nix
+            pyproject-build-systems
+            ;
+        };
 
-      devShells.default = pkgs.mkShell {
-        packages = with pkgs; [
-          nil
-        ];
-      };
-    }
-  );
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            nil
+          ];
+        };
+      }
+    );
 }

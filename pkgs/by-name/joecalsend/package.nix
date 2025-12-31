@@ -1,7 +1,7 @@
 {
   pkgs,
   rustPlatform,
-  fetchFromGitea
+  fetchFromGitea,
 }:
 rustPlatform.buildRustPackage {
   name = "joecalsend";
