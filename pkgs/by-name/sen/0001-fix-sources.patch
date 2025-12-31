@@ -1,0 +1,26 @@
+From 48d96bae571f589655aa7e2884606ce5933c3982 Mon Sep 17 00:00:00 2001
+From: phanirithvij <phanirithvij2000@gmail.com>
+Date: Thu, 1 Jan 2026 17:05:39 +0530
+Subject: [PATCH] fix sources
+
+Signed-off-by: phanirithvij <phanirithvij2000@gmail.com>
+---
+ pyproject.toml | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index 230dc08..d38b975 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -36,5 +36,6 @@ Repository = "https://github.com/TomasTomecek/sen/"
+ [project.scripts]
+ sen = "sen.cli:main"
+ 
+-[tool.setuptools]
+-packages = ["sen"]
++[tool.setuptools.packages.find]
++where = ["."]
++include = ["sen*"]
+-- 
+2.51.2
+
