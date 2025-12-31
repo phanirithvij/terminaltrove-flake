@@ -2,16 +2,14 @@
   rustPlatform,
   fetchFromGitHub,
 }:
-rustPlatform.buildRustPackage {
-  name = "swaptop";
+rustPlatform.buildRustPackage rec {
+  pname = "swaptop";
+  version = "1.0.5";
   src = fetchFromGitHub {
     owner = "luis-ota";
     repo = "swaptop";
-    tag = "v1.0.1";
-    hash = "sha256-XMQuQZFY+7IkIJoVCYuDEIRikS1hOH7ql5tj8mzomJQ=";
+    tag = "v${version}";
+    hash = "sha256-7AdV+VGrOOHYeBXgph+rVDcFSge0CRGSzDX7pR/csFY=";
   };
-
-  buildFeatures = [ "linux" ];
-
-  cargoHash = "sha256-f3Ntcdo71nNHvZ5kfpVhz2l+pazrWog6ODpuDmCSE0g=";
+  cargoHash = "sha256-niOpQ6AfEHKsIUoMzS9qUvfrZHmN3xp1+cwUhafhWd8=";
 }
