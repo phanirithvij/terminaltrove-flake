@@ -1,17 +1,36 @@
 {
+  lib,
   rustPlatform,
   fetchFromGitHub,
+  nix-update-script,
 }:
-rustPlatform.buildRustPackage {
-  name = "swaptop";
+rustPlatform.buildRustPackage rec {
+  pname = "swaptop";
+  version = "1.0.5";
+
   src = fetchFromGitHub {
     owner = "luis-ota";
     repo = "swaptop";
-    tag = "v1.0.1";
-    hash = "sha256-XMQuQZFY+7IkIJoVCYuDEIRikS1hOH7ql5tj8mzomJQ=";
+    tag = "v${version}";
+    hash = "sha256-7AdV+VGrOOHYeBXgph+rVDcFSge0CRGSzDX7pR/csFY=";
   };
 
-  buildFeatures = [ "linux" ];
+  cargoHash = "sha256-niOpQ6AfEHKsIUoMzS9qUvfrZHmN3xp1+cwUhafhWd8=";
 
-  cargoHash = "sha256-f3Ntcdo71nNHvZ5kfpVhz2l+pazrWog6ODpuDmCSE0g=";
+  # has no cli commands like --help --version
+
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
+    changelog = "https://github.com/luis-ota/swaptop/releases/tag/${src.tag}";
+    description = "Swap usage monitor written in rust";
+    homepage = "https://github.com/luis-ota/swaptop";
+    license = lib.licenses.mit;
+    mainProgram = "swaptop";
+    maintainers = with lib.maintainers; [
+      ipsavitsky
+      phanirithvij
+    ];
+    platforms = lib.platforms.linux;
+  };
 }
