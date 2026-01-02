@@ -1,0 +1,42 @@
+From c0114146ae9ae431d1abff0fcec3fe3734a63c8a Mon Sep 17 00:00:00 2001
+From: phanirithvij <phanirithvij2000@gmail.com>
+Date: Sat, 3 Jan 2026 00:19:53 +0530
+Subject: [PATCH 2/2] e2e add timeouts
+
+Signed-off-by: phanirithvij <phanirithvij2000@gmail.com>
+---
+ tests-e2e/tests_e2e.py | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/tests-e2e/tests_e2e.py b/tests-e2e/tests_e2e.py
+index 4f2cde0..05ef56b 100644
+--- a/tests-e2e/tests_e2e.py
++++ b/tests-e2e/tests_e2e.py
+@@ -29,9 +29,22 @@ PROPERTIES_PATH = (
+ SANDBOX_PROPERTIES = load_properties(PROPERTIES_PATH)
+ CONFLUENT_VERSION = SANDBOX_PROPERTIES["CONFLUENT_VERSION"]
+ REDPANDA_VERSION = SANDBOX_PROPERTIES["REDPANDA_VERSION"]
++
++
++# Patch for allowing longer timeouts
++class RedpandaContainerWithTimeOut(RedpandaContainer):
++    def start(self, timeout=120) -> "RedpandaContainer":  # Change default from 10 to 120
++        return super().start(timeout=timeout)
++
++
++class KafkaContainerWithTimeout(KafkaContainer):
++    def start(self, timeout=120) -> "KafkaContainer":  # Change default from 30 to 120
++        return super().start(timeout=timeout)
++
++
+ KAFKA_IMPLEMENTATIONS = [
+-    KafkaContainer(f"confluentinc/cp-kafka:{CONFLUENT_VERSION}").with_kraft(),
+-    RedpandaContainer(f"redpandadata/redpanda:v{REDPANDA_VERSION}"),
++    KafkaContainerWithTimeout(f"confluentinc/cp-kafka:{CONFLUENT_VERSION}").with_kraft(),
++    RedpandaContainerWithTimeOut(f"redpandadata/redpanda:v{REDPANDA_VERSION}"),
+ ]
+ 
+ 
+-- 
+2.51.2
+

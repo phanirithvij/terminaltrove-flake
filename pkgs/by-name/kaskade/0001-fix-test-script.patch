@@ -1,0 +1,26 @@
+From bbd8a939e37b04683267ba8961df14e41a1a385b Mon Sep 17 00:00:00 2001
+From: phanirithvij <phanirithvij2000@gmail.com>
+Date: Fri, 2 Jan 2026 14:59:24 +0530
+Subject: [PATCH 1/2] fix test script
+
+Signed-off-by: phanirithvij <phanirithvij2000@gmail.com>
+---
+ scripts/tests.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/tests.py b/scripts/tests.py
+index a01e688..4d26a5a 100644
+--- a/scripts/tests.py
++++ b/scripts/tests.py
+@@ -8,7 +8,7 @@ from scripts import CommandProcessor
+ def main(e2e: bool) -> None:
+     module = "tests-e2e" if e2e else "tests"
+     commands = {
+-        "executing tests": f"poetry run python -m unittest discover -v {module}",
++        "executing tests": f"python -m unittest discover -v {module}",
+     }
+     command_processor = CommandProcessor(commands)
+     command_processor.run()
+-- 
+2.51.2
+
