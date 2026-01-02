@@ -1,24 +1,46 @@
 {
-  pkgs,
+  lib,
+  systemd,
+  pkg-config,
+
   rustPlatform,
   fetchFromGitHub,
+
+  versionCheckHook,
+  nix-update-script,
 }:
-rustPlatform.buildRustPackage {
-  name = "qmassa";
+rustPlatform.buildRustPackage rec {
+  pname = "qmassa";
+  version = "1.2.0";
+
   src = fetchFromGitHub {
     owner = "ulissesf";
     repo = "qmassa";
-    tag = "v1.0.1";
-    hash = "sha256-EKvK/+0xs0yAwp0TiQVcGJjc9TfShQIHSxcDPkZyr4I=";
+    tag = "v${version}";
+    hash = "sha256-85kN/tGBpMvjnshmzBYSy8O2EQf8IlqrXLme2oWJAXo=";
   };
 
-  nativeBuildInputs = with pkgs; [
-    pkg-config
-  ];
+  cargoHash = "sha256-q6ajcwuJ6TeuYNYexB3mUMHBD/74pbG3thfvZ0z7EPc=";
 
-  buildInputs = with pkgs; [
-    systemd
-  ];
+  nativeBuildInputs = [ pkg-config ];
 
-  cargoHash = "sha256-L5OzshWGPw8OIVE4GCW99Qib8udbSNVsl+IYWnG0NAU=";
+  buildInputs = [ systemd ];
+
+  doInstallCheck = true;
+  versionCheckProgramArg = "--version";
+  nativeInstallCheckInputs = [ versionCheckHook ];
+
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
+    changelog = "https://github.com/ulissesf/qmassa/blob/${src.tag}/CHANGELOG.md";
+    description = "Rust terminal-based tool for displaying GPUs usage stats on Linux";
+    homepage = "https://github.com/ulissesf/qmassa";
+    license = lib.licenses.asl20;
+    mainProgram = "qmassa";
+    maintainers = with lib.maintainers; [
+      ipsavitsky
+      phanirithvij
+    ];
+  };
 }
