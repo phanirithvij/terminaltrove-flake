@@ -1,3 +1,4 @@
+# TODO get it working without *2nix
 {
   pkgs,
   uv2nix,
@@ -9,7 +10,7 @@ let
   src = fetchFromGitHub {
     owner = "edward-jazzhands";
     repo = "cloctui";
-    rev = "355724bbe76704464af2c0af6c1dded15d211f8a";
+    rev = "355724bbe76704464af2c0af6c1dded15d211f8a"; # no tags
     hash = "sha256-eGV3nyJSyxIVbb641wsJx3Jxo63LhIBDUUoMx2lMsco=";
   };
 
@@ -36,9 +37,7 @@ let
 in
 pkgs.writeShellApplication {
   name = "cloctui";
-  runtimeInputs = [
-    cloctui_venv
-  ];
+  runtimeInputs = [ cloctui_venv ];
   text = ''
     exec cloctui "$@"
   '';
