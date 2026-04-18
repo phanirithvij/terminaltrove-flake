@@ -9,7 +9,7 @@
   nix-update-script,
 }:
 
-python3Packages.buildPythonApplication rec {
+python3Packages.buildPythonApplication (finalAttrs: {
   pname = "flameshow";
   version = "1.1.4";
   pyproject = true;
@@ -17,7 +17,7 @@ python3Packages.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "laixintao";
     repo = "flameshow";
-    rev = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-Nx8RJmw7UAsNQ+Akg01oz+raFx9iinXMcXHDA45/yeo=";
   };
 
@@ -58,4 +58,4 @@ python3Packages.buildPythonApplication rec {
       phanirithvij
     ];
   };
-}
+})

@@ -5,7 +5,7 @@
   nix-update-script,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication (finalAttrs: {
   pname = "sen";
   version = "0.8.1";
   pyproject = true;
@@ -13,7 +13,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "TomasTomecek";
     repo = "sen";
-    tag = version;
+    tag = finalAttrs.version;
     hash = "sha256-aCCnwCmdrDVeEttRd19Xjxq/gglQyltiQAfNewFDj8M=";
   };
 
@@ -53,9 +53,9 @@ python3.pkgs.buildPythonApplication rec {
   meta = {
     description = "Terminal User Interface for containers";
     homepage = "https://github.com/TomasTomecek/sen";
-    changelog = "https://github.com/TomasTomecek/sen/blob/${src.rev}/CHANGELOG.md";
+    changelog = "https://github.com/TomasTomecek/sen/blob/${finalAttrs.src.rev}/CHANGELOG.md";
     license = lib.licenses.mit;
     mainProgram = "sen";
     maintainers = with lib.maintainers; [ phanirithvij ];
   };
-}
+})

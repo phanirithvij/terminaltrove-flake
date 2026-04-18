@@ -6,14 +6,14 @@
   nix-update-script,
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "rhit";
   version = "2.0.4";
 
   src = fetchFromGitHub {
     owner = "Canop";
     repo = "rhit";
-    tag = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-JPEtATa57/ODYTbandGQkDdE8yBAGu6uXXuGEMaVg58=";
   };
 
@@ -28,10 +28,10 @@ rustPlatform.buildRustPackage rec {
   meta = {
     description = "A nginx log explorer";
     homepage = "https://dystroy.org/rhit/";
-    changelog = "https://github.com/Canop/rhit/blob/${src.rev}/CHANGELOG.md";
+    changelog = "https://github.com/Canop/rhit/blob/${finalAttrs.src.rev}/CHANGELOG.md";
     license = lib.licenses.mit;
     mainProgram = "rhit";
     maintainers = with lib.maintainers; [ phanirithvij ];
     platforms = lib.platforms.linux ++ lib.platforms.darwin;
   };
-}
+})

@@ -16,14 +16,14 @@
   nix-update-script,
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "spotatui";
   version = "0.34.6";
 
   src = fetchFromGitHub {
     owner = "largemodgames";
     repo = "spotatui";
-    rev = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-Lrv4XQakWQu3E2zcIT0WXGVM1GT/XvLi6SGKnJCoD2A=";
   };
 
@@ -69,4 +69,4 @@ rustPlatform.buildRustPackage rec {
     mainProgram = "spotatui";
     platforms = lib.platforms.linux;
   };
-}
+})

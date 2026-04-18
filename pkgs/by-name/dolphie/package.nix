@@ -9,7 +9,7 @@
   nix-update-script,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication (finalAttrs: {
   pname = "dolphie";
   version = "6.11.2";
   pyproject = true;
@@ -17,7 +17,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "charles-001";
     repo = "dolphie";
-    tag = version;
+    tag = finalAttrs.version;
     hash = "sha256-MKEDq7EPgizcIVwA9y5VudLRYWWLTsqKqlrh/mb5RxQ=";
   };
 
@@ -57,4 +57,4 @@ python3.pkgs.buildPythonApplication rec {
     mainProgram = "dolphie";
     maintainers = with lib.maintainers; [ phanirithvij ];
   };
-}
+})

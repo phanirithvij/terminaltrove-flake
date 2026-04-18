@@ -4,7 +4,7 @@
   fetchFromGitHub,
 }:
 
-python3.pkgs.buildPythonPackage rec {
+python3.pkgs.buildPythonPackage (finalAttrs: {
   pname = "myloginpath";
   version = "0.0.4";
   pyproject = true;
@@ -12,7 +12,7 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "PyMySQL";
     repo = "myloginpath";
-    rev = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-2D3x+6d2mUAbCtXVPtrYnTFgBlNmYLorZ1FTWzfaNAc=";
   };
 
@@ -32,4 +32,4 @@ python3.pkgs.buildPythonPackage rec {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ phanirithvij ];
   };
-}
+})

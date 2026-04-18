@@ -10,14 +10,14 @@
   versionCheckHook,
   nix-update-script,
 }:
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "comchan";
   version = "0.2.4";
 
   src = fetchFromGitHub {
     owner = "Vaishnav-Sabari-Girish";
     repo = "ComChan";
-    tag = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-v8kKRZyC9aPLmoZvXonzL2Uy3Y3pB7OL3VXtO/aogc4=";
   };
 
@@ -45,4 +45,4 @@ rustPlatform.buildRustPackage rec {
       phanirithvij
     ];
   };
-}
+})

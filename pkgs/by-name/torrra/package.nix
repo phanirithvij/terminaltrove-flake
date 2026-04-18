@@ -6,7 +6,7 @@
   nix-update-script,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication (finalAttrs: {
   pname = "torrra";
   version = "2.0.4";
   pyproject = true;
@@ -14,7 +14,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "stabldev";
     repo = "torrra";
-    tag = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-gGT0S0DHDH/lJVfjCbRNdOI6hckyY8eJxRUSz+Afeso=";
   };
 
@@ -68,4 +68,4 @@ python3.pkgs.buildPythonApplication rec {
     mainProgram = "torrra";
     maintainers = with lib.maintainers; [ phanirithvij ];
   };
-}
+})

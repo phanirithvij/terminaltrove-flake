@@ -9,7 +9,7 @@
   versionCheckHook,
   nix-update-script,
 }:
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "joecalsend";
   # see https://git.kittencollective.com/nebkor/joecalsend/src/branch/main/VERSIONING.md
   version = "1.6.18033988";
@@ -22,7 +22,7 @@ rustPlatform.buildRustPackage rec {
       let
         # Remove middle dot from version string (1.6.18033988 -> 1.618033988)
         # because GitHub release tags use the condensed format
-        parts = builtins.splitVersion version;
+        parts = builtins.splitVersion finalAttrs.version;
         ver = "${builtins.elemAt parts 0}.${builtins.elemAt parts 1}${builtins.elemAt parts 2}";
       in
       ver;
@@ -46,7 +46,7 @@ rustPlatform.buildRustPackage rec {
   passthru.updateScript = nix-update-script { };
 
   meta = {
-    changelog = "https://git.kittencollective.com/nebkor/joecalsend/releases/tag/${version}";
+    changelog = "https://git.kittencollective.com/nebkor/joecalsend/releases/tag/${finalAttrs.version}";
     description = "Rust terminal client for Localsend";
     homepage = "https://git.kittencollective.com/nebkor/joecalsend";
     # https://git.kittencollective.com/nebkor/joecalsend/src/branch/main/LICENSE.md
@@ -57,4 +57,4 @@ rustPlatform.buildRustPackage rec {
       phanirithvij
     ];
   };
-}
+})

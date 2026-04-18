@@ -32,7 +32,7 @@ buildGoModule.override { stdenv = clangStdenv; } (finalAttrs: {
   src = fetchFromGitHub {
     owner = "hengyoush";
     repo = "kyanos";
-    rev = "v${finalAttrs.version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-UH6mqFQnib8RITbqxjtcQA1nwabS70v/o7dMXQyjTbk=";
     fetchSubmodules = true;
   };

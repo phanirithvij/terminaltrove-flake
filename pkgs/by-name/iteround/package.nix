@@ -5,7 +5,7 @@
   fetchFromGitHub,
 }:
 
-python3.pkgs.buildPythonPackage rec {
+python3.pkgs.buildPythonPackage (finalAttrs: {
   pname = "iteround";
   version = "1.0.4";
   pyproject = true;
@@ -13,7 +13,7 @@ python3.pkgs.buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "cgdeboer";
     repo = "iteround";
-    rev = "v${version}";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-0lHu01MTf+rdrUYuRDR2IUvQQKcw7NZXBOw+nbEmPMc=";
   };
 
@@ -31,4 +31,4 @@ python3.pkgs.buildPythonPackage rec {
     maintainers = with lib.maintainers; [ nagy ];
     mainProgram = "iteround";
   };
-}
+})
