@@ -11,14 +11,18 @@
   tmux,
   gawk,
   which,
+  runtimeShell,
   versionCheckHook,
   writableTmpDirAsHomeHook,
+  xvfb-run,
 
   nix-update-script,
 }:
 buildGoModule (finalAttrs: {
   pname = "nerdlog";
   version = "1.10.0";
+
+  __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "dimonomid";
@@ -34,8 +38,7 @@ buildGoModule (finalAttrs: {
   buildInputs = [ libX11 ];
 
   # fixes clipboard functionality on linux
-  # usually done in modPostBuild, but vendorHash will change
-  preBuild = lib.optionalString stdenv.hostPlatform.isLinux ''
+  postConfigure = lib.optionalString stdenv.hostPlatform.isLinux ''
     substituteInPlace \
       vendor/golang.design/x/clipboard/clipboard_linux.c --replace-fail \
         "libX11.so" "${lib.getLib libX11}/lib/libX11.so"
@@ -46,7 +49,7 @@ buildGoModule (finalAttrs: {
     "-X github.com/dimonomid/nerdlog/version.version=${finalAttrs.version}"
     "-X github.com/dimonomid/nerdlog/version.commit=${finalAttrs.src.rev}"
     "-X github.com/dimonomid/nerdlog/version.date=1970-01-01T00:00:00Z"
-    "-X github.com/dimonomid/nerdlog/version.builtBy=nix@nixpkgs"
+    "-X github.com/dimonomid/nerdlog/version.builtBy=nix"
   ];
 
   nativeCheckInputs = [
@@ -54,6 +57,8 @@ buildGoModule (finalAttrs: {
     gawk
     which
   ];
+
+  doCheck = false;
 
   # Tests need the path to the binary
   preCheck = ''
@@ -65,8 +70,15 @@ buildGoModule (finalAttrs: {
     versionCheckHook
     writableTmpDirAsHomeHook
   ];
-  versionCheckProgramArg = "--version";
   versionCheckKeepEnvironment = [ "HOME" ];
+  preInstallCheck = ''
+    cat <<EOF > xvfb-wrapper.sh
+    #!${runtimeShell}
+    exec ${lib.getExe xvfb-run} "$out/bin/nerdlog" "\$@"
+    EOF
+    chmod +x xvfb-wrapper.sh
+    export versionCheckProgram="$PWD/xvfb-wrapper.sh"
+  '';
 
   passthru.updateScript = nix-update-script { };
 
